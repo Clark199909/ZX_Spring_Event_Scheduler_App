@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-                                            
+                                                    
     
     
     
@@ -9,8 +9,12 @@
     
     
     
-    <wb-module deploy-name="spring-security-demo">
-                                                                                        
+    
+    
+    <wb-module deploy-name="spring-security-custom-user-registration-demo">
+                                                                                                        
+        
+        
         
         
         
@@ -21,7 +25,9 @@
         
         
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-                                                                                        
+                                                                                                        
+        
+        
         
         
         
@@ -32,7 +38,9 @@
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-                                                                                        
+                                                                                                        
+        
+        
         
         
         
@@ -43,7 +51,9 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-                                                                                        
+                                                                                                        
+        
+        
         
         
         
@@ -54,8 +64,10 @@
         
         
         <property name="java-output-path" value="/spring-security-demo/target/classes"/>
-        <property name="context-root" value="my-spring-project"/>
-                                                                                    
+        <property name="context-root" value="spring-security-custom-user-registration-demo"/>
+                                                                                                    
+    
+    
     
     
     
@@ -66,7 +78,9 @@
     
     
     </wb-module>
-                                        
+                                                
+
+
 
 
 

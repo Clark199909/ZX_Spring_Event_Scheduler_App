@@ -12,12 +12,18 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class[] {DemoAppConfig.class};
+		return new Class[] { DemoAppConfig.class };
 	}
 
 	@Override
 	protected String[] getServletMappings() {
-		return new String[] {"/"};
+		return new String[] { "/" };
 	}
 
 }
+
+
+
+
+
+
