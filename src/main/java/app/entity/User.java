@@ -32,6 +32,12 @@ public class User {
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Collection<Role> roles;
+	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_meetings", 
+	joinColumns = @JoinColumn(name = "user_id"), 
+	inverseJoinColumns = @JoinColumn(name = "meeting_id"))
+	private Collection<Meeting> meetings;
 
 	public User() {
 	}
@@ -52,6 +58,25 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.roles = roles;
+	}
+
+	public User(String userName, String password, String firstName, String lastName, String email,
+			Collection<Role> roles, Collection<Meeting> meetings) {
+		this.userName = userName;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.roles = roles;
+		this.meetings = meetings;
+	}
+
+	public Collection<Meeting> getMeetings() {
+		return meetings;
+	}
+
+	public void setMeetings(Collection<Meeting> meetings) {
+		this.meetings = meetings;
 	}
 
 	public Long getId() {

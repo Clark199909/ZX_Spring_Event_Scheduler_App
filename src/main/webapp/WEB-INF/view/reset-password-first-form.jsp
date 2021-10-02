@@ -63,12 +63,6 @@
 					        </div>
 					    </div>
 
-						<!-- User name -->
-						<div style="margin-bottom: 25px" class="input-group">
-							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
-							<form:errors path="userNameOrEmail" cssClass="error"/>
-							<form:input path="userNameOrEmail" placeholder="user name or email (*)" class="form-control" />
-						</div>
 
 						<!-- Register Button -->
 						<div style="margin-top: 10px" class="form-group">						

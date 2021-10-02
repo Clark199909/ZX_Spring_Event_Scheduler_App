@@ -4,15 +4,15 @@
 <html>
 
 <head>
-	<title>luv2code Company Home Page</title>
+	<title>ZX Event Scheduler Home</title>
 </head>
 
 <body>
-	<h2>luv2code Company Home Page</h2>
+	<h2>ZX Event Scheduler</h2>
 	<hr>
 	
 	<p>
-	Welcome to the luv2code company home page!
+	Feel free to schedule meetings and other events!
 	</p>
 	
 	<hr>
@@ -24,6 +24,11 @@
 		<br><br>
 		Role(s): <security:authentication property="principal.authorities" />
 	</p>
+	
+	<input type="button" value="Add personal meeting" 
+			onclick="window.location.href='manageMeeting/showPersonalMeetingForm'; return false;"
+			class="add-button"
+	/>
 	
 	<security:authorize access="hasRole('MANAGER')">
 	
