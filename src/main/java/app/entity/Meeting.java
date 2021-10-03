@@ -32,10 +32,6 @@ public class Meeting {
 	@JoinColumn(name="type_id")
 	private Type meetingType;
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="status_id")
-	private Status meetingStatus;
-	
 	@Column(name="title")
 	private String title;
 	
@@ -50,19 +46,17 @@ public class Meeting {
 	
 	public Meeting() {}
 
-	public Meeting(User initializer, Type meetingType, Status meetingStatus, String title, String description) {
+	public Meeting(User initializer, Type meetingType, String title, String description) {
 		this.initializer = initializer;
 		this.meetingType = meetingType;
-		this.meetingStatus = meetingStatus;
 		this.title = title;
 		this.description = description;
 	}
 
-	public Meeting(User initializer, Type meetingType, Status meetingStatus, String title, String description,
+	public Meeting(User initializer, Type meetingType, String title, String description,
 			Collection<User> users) {
 		this.initializer = initializer;
 		this.meetingType = meetingType;
-		this.meetingStatus = meetingStatus;
 		this.title = title;
 		this.description = description;
 		this.users = users;
@@ -90,14 +84,6 @@ public class Meeting {
 
 	public void setMeetingType(Type meetingType) {
 		this.meetingType = meetingType;
-	}
-
-	public Status getMeetingStatus() {
-		return meetingStatus;
-	}
-
-	public void setMeetingStatus(Status meetingStatus) {
-		this.meetingStatus = meetingStatus;
 	}
 	
 	public String getTitle() {
@@ -127,7 +113,7 @@ public class Meeting {
 	@Override
 	public String toString() {
 		return "Meeting [id=" + id + ", initializer=" + initializer + ", meetingType=" + meetingType
-				+ ", meetingStatus=" + meetingStatus + ", title=" + title + ", description=" + description + ", users="
+				+ ", title=" + title + ", description=" + description + ", users="
 				+ users + "]";
 	}
 	

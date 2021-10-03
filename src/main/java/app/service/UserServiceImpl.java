@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,5 +85,12 @@ public class UserServiceImpl implements UserService {
 	public void save(User theUser) {
 		theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
 		userDao.save(theUser);
+	}
+
+	@Override
+	@Transactional
+	public List<User> searchUsers(String theSearchName) {
+		
+		return userDao.searchUsers(theSearchName);
 	}
 }

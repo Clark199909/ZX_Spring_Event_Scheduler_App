@@ -30,6 +30,19 @@
 			class="add-button"
 	/>
 	
+	<input type="button" value="Add partner meeting" 
+			onclick="window.location.href='manageMeeting/showPartnerMeetingForm'; return false;"
+			class="add-button"
+	/>
+	
+	<security:authorize access="hasRole('MANAGER')">
+		<input type="button" value="Add team meeting" 
+				onclick="window.location.href='manageMeeting/showTeamMeetingForm'; return false;"
+				class="add-button"
+		/>
+	</security:authorize>
+	
+	
 	<security:authorize access="hasRole('MANAGER')">
 	
 		<!-- Add a link to point to /leaders ... this is for the managers -->

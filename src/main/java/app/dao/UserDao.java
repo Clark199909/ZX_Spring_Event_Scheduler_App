@@ -1,5 +1,7 @@
 package app.dao;
 
+import java.util.List;
+
 import app.entity.User;
 
 public interface UserDao {
@@ -9,5 +11,7 @@ public interface UserDao {
     void save(User user);
 
 	User findByUserEmail(String userEmail);
+	
+	List<User> searchUsers(String theSearchName);
     
 }
