@@ -43,12 +43,12 @@
 
 	<div id="wrapper">
 		<div id="header">
-			<h2>CRM - Customer Relationship Manager</h2>
+			<h2>Schedule a Personal Event!</h2>
 		</div>
 	</div>
 
 	<div id="container">
-		<h3>Save Customer</h3>
+		<h3>Save Personal Event</h3>
 	
 		<form:form action="processPersonalMeetingForm" 
 				   modelAttribute="personalMeeting" 
