@@ -76,6 +76,13 @@
 	</div>
 	
 	<p></p>
+	
+	<form:form action="${pageContext.request.contextPath}/" 
+			   method="GET">
+	
+		<input type="submit" value="Home" class="add-button" />
+	
+	</form:form>
 
 </body>
 

@@ -33,7 +33,11 @@
 	<link type="text/css"
 		  rel="stylesheet"
 		  href="${pageContext.request.contextPath}/resources/css/add-customer-style.css">
-
+	
+	<style>
+		.error {color:red}
+	</style>
+	
 </head>
 
 <body>
@@ -79,7 +83,7 @@
 						<td><label>Title:</label></td>
 						<td>
 							<form:input path="title" />
-							<form:errors path="title" />
+							<form:errors path="title" cssClass="error"/>
 						</td>
 					</tr>
 				
@@ -87,7 +91,7 @@
 						<td><label>Description:</label></td>
 						<td>
 							<form:textarea path="description" />
-							<form:errors path="description" />
+							<form:errors path="description" cssClass="error"/>
 						</td>
 					</tr>
 					
@@ -95,18 +99,24 @@
 						<td><label>Participants:</label></td>
 						<td>
 							<form:input path="participantNames" />
-							<form:errors path="participantNames" />
+							<form:errors path="participantNames" cssClass="error"/>
 						</td>
 					</tr>
 					
 					<tr>
 						<td><label>Date:</label></td>
-						<td><form:input path="startDate" type="text" id="datepicker" /><td>
+						<td>
+							<form:input path="startDate" type="text" id="datepicker" />
+							<form:errors path="startDate" cssClass="error"/>
+						<td>
 					</tr>
 					
 					<tr>
 						<td><label>Time:</label></td>
-						<td><form:input path="startTime" type="text" id="timepicker" /><td>
+						<td>
+							<form:input path="startTime" type="text" id="timepicker" />
+							<form:errors path="startTime" cssClass="error"/>
+						<td>
 					</tr>
 					
 					<tr>
