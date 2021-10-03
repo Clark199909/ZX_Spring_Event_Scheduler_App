@@ -1,6 +1,8 @@
 package app.entity;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +16,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "meeting")
@@ -38,11 +42,15 @@ public class Meeting {
 	@Column(name="description")
 	private String description;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@Column(name = "date_and_time", columnDefinition="DATETIME")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date startTime;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_meetings", 
 	joinColumns = @JoinColumn(name = "meeting_id"), 
 	inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private Collection<User> users;
+	private Set<User> users;
 	
 	public Meeting() {}
 
@@ -54,7 +62,7 @@ public class Meeting {
 	}
 
 	public Meeting(User initializer, Type meetingType, String title, String description,
-			Collection<User> users) {
+			Set<User> users) {
 		this.initializer = initializer;
 		this.meetingType = meetingType;
 		this.title = title;
@@ -106,7 +114,7 @@ public class Meeting {
 		return users;
 	}
 
-	public void setUsers(Collection<User> users) {
+	public void setUsers(Set<User> users) {
 		this.users = users;
 	}
 
@@ -116,6 +124,15 @@ public class Meeting {
 				+ ", title=" + title + ", description=" + description + ", users="
 				+ users + "]";
 	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	
 	
 	
 }

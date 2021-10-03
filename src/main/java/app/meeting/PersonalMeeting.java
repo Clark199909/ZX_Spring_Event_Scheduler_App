@@ -15,6 +15,14 @@ public class PersonalMeeting {
 	
 	private String initializerName;
 
+	@NotNull(message = "is required")
+	@Size(min = 1, message = "is required")
+	private String startDate;
+	
+	@NotNull(message = "is required")
+	@Size(min = 1, message = "is required")
+	private String startTime;
+	
 	public PersonalMeeting() {}
 
 	public PersonalMeeting(String description, String title, String initializerName) {
@@ -45,6 +53,22 @@ public class PersonalMeeting {
 
 	public void setInitializerName(String initializerName) {
 		this.initializerName = initializerName;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 	
 	

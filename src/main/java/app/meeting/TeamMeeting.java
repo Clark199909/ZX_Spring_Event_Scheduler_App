@@ -23,6 +23,14 @@ public class TeamMeeting {
 	
 	private String[] participants;
 	
+	@NotNull(message = "is required")
+	@Size(min = 1, message = "is required")
+	private String startDate;
+	
+	@NotNull(message = "is required")
+	@Size(min = 1, message = "is required")
+	private String startTime;
+	
 	public TeamMeeting() {}
 
 	public TeamMeeting(String description, String title, String initializerName, 
@@ -72,6 +80,23 @@ public class TeamMeeting {
 	public void setParticipants(String[] participants) {
 		this.participants = participants;
 	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	
 	
 	
 }

@@ -1,8 +1,15 @@
 package app.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +27,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import app.entity.Meeting;
 import app.entity.User;
 import app.meeting.PartnerMeeting;
 import app.meeting.PersonalMeeting;
@@ -66,7 +76,7 @@ public class ManageMeetingController {
 			@Valid @ModelAttribute("personalMeeting") PersonalMeeting thePersonalMeeting, 
 			BindingResult theBindingResult, 
 			Model theModel) {
-		logger.info(thePersonalMeeting.getInitializerName());
+
 		if (theBindingResult.hasErrors()){
 			 return "personal-meeting-form";
 		}
@@ -159,5 +169,26 @@ public class ManageMeetingController {
 		meetingService.save(theTeamMeeting);
 		return "redirect:/";
 	}
+	
+	@GetMapping("/showPastMeetings")
+	public String showPastMeetings(Model theModel) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String myName = authentication.getName();
+		User myself = userService.findByUserName(myName);
+		List<Meeting> theUpcomingMeetings = meetingService.findMeetings("previous", myself);
+		theModel.addAttribute("upcomingMeetings", theUpcomingMeetings);
+		return "previous-meeting-form";
+	}
 
+	@GetMapping("/showFutureMeetings")
+	public String showFutureMeetings(Model theModel) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String myName = authentication.getName();
+		User myself = userService.findByUserName(myName);
+		List<Meeting> theUpcomingMeetings = meetingService.findMeetings("future", myself);
+		theModel.addAttribute("upcomingMeetings", theUpcomingMeetings);
+		return "upcoming-meeting-form";
+	}
+	
 }

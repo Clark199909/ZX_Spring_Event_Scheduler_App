@@ -17,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,7 +54,9 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(crmUser.getEmail());
 
 		// give user default role of "employee"
-		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_EMPLOYEE")));
+		Set<Role> role_set = new HashSet<>();
+		role_set.add(roleDao.findRoleByName("ROLE_EMPLOYEE"));
+		user.setRoles(role_set);
 
 		 // save user in the database
 		userDao.save(user);

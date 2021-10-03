@@ -1,5 +1,10 @@
 package app.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -7,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import app.entity.Meeting;
+import app.entity.User;
 
 @Repository
 public class MeetingDaoImpl implements MeetingDao {
@@ -14,24 +20,6 @@ public class MeetingDaoImpl implements MeetingDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	@Override
-	public Meeting findByMeetingTitle(String title) {
-		// get the current hibernate session
-		Session currentSession = sessionFactory.getCurrentSession();
-
-		// now retrieve/read from database using username
-		Query<Meeting> theQuery = currentSession.createQuery("from Meeting where title=:meetingTitle", Meeting.class);
-		theQuery.setParameter("meetingTitle", title);
-		Meeting theMeeting = null;
-		try {
-			theMeeting = theQuery.getSingleResult();
-		} catch (Exception e) {
-			theMeeting = null;
-		}
-
-		return theMeeting;
-	}
-
 	@Override
 	public void save(Meeting theMeeting) {
 		
@@ -41,6 +29,45 @@ public class MeetingDaoImpl implements MeetingDao {
 		// create the user ... finally LOL
 		currentSession.saveOrUpdate(theMeeting);
 
+	}
+
+	@Override
+	public List<Meeting> findMeetings(String when, User user) {
+		
+		// get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+				
+		Query<Meeting> theQuery = null;
+				
+		//
+		// Only search by name if theSearchName is not empty
+		//
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));  
+		Date date = new Date();  
+		try {
+			date = formatter.parse(formatter.format(date));
+		}catch(Exception e) {
+		}
+		
+		if(when.equals("previous")) {
+			theQuery = currentSession.createQuery(
+					"from Meeting where initializer =:myself and startTime < :curTime", Meeting.class);
+			theQuery.setParameter("curTime", date);
+			theQuery.setParameter("myself", user);
+		}else {
+			theQuery = currentSession.createQuery(
+					"from Meeting where initializer =:myself and startTime >= :curTime", Meeting.class);
+			theQuery.setParameter("curTime", date);
+			theQuery.setParameter("myself", user);
+		}
+				
+		// execute query and get result list
+		List<Meeting> meetings = theQuery.getResultList();
+				
+		// return the results
+		return meetings;
 	}
 
 }

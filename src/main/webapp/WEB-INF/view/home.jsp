@@ -42,6 +42,19 @@
 		/>
 	</security:authorize>
 	
+	<hr>
+	
+	<input type="button" value="Check Past Meetings" 
+			onclick="window.location.href='manageMeeting/showPastMeetings'; return false;"
+			class="add-button"
+	/>
+	
+	<input type="button" value="Check Upcoming Meetings" 
+			onclick="window.location.href='manageMeeting/showFutureMeetings'; return false;"
+			class="add-button"
+	/>
+	
+	<hr>
 	
 	<security:authorize access="hasRole('MANAGER')">
 	

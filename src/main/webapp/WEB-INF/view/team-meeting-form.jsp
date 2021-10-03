@@ -7,6 +7,24 @@
 <head>
 	
 	<title>Save Customer</title>
+	
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+    
+    <script>
+    	$(function () {
+        	$("#datepicker").datepicker();
+        });
+    	
+    	$(function() {
+    	    $('#timepicker').timepicker();
+
+    	});
+    </script>
 
 	<link type="text/css"
 		  rel="stylesheet"
@@ -78,6 +96,16 @@
 							<form:input path="participantNames" />
 							<form:errors path="participantNames" />
 						</td>
+					</tr>
+					
+					<tr>
+						<td><label>Date:</label></td>
+						<td><form:input path="startDate" type="text" id="datepicker" /><td>
+					</tr>
+					
+					<tr>
+						<td><label>Time:</label></td>
+						<td><form:input path="startTime" type="text" id="timepicker" /><td>
 					</tr>
 					
 					<tr>

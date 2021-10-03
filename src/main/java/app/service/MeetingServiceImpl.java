@@ -1,7 +1,14 @@
 package app.service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -31,9 +38,17 @@ public class MeetingServiceImpl implements MeetingService {
 	@Autowired
 	private UserDao userDao;
 	
-	@Override
-	public Meeting findByMeetingTitle(String title) {
-		// TODO Auto-generated method stub
+	public Date convertDate(String startDate, String startTime) {
+		String input = startDate + " " + startTime;
+		System.out.println(input);
+		DateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy KK:mm a");
+		try {
+			Date output =  inputFormat.parse(input);
+			System.out.println(output.toString());
+			return output;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -47,9 +62,11 @@ public class MeetingServiceImpl implements MeetingService {
 		theMeeting.setTitle(thePersonalMeeting.getTitle());
 		theMeeting.setMeetingType(typeDao.findTypeByName("personal"));
 		theMeeting.setInitializer(theInitializer);
-		Collection<User> theUsers = new ArrayList<>(); 
+		Set<User> theUsers = new HashSet<>(); 
 		theUsers.add(theInitializer);
 		theMeeting.setUsers(theUsers);
+		theMeeting.setStartTime(convertDate(thePersonalMeeting.getStartDate(), 
+				thePersonalMeeting.getStartTime()));
 		
 		meetingDao.save(theMeeting);
 	}
@@ -72,10 +89,12 @@ public class MeetingServiceImpl implements MeetingService {
 		theMeeting.setTitle(thePartnerMeeting.getTitle());
 		theMeeting.setMeetingType(typeDao.findTypeByName("partner"));
 		theMeeting.setInitializer(theInitializer);
-		Collection<User> theUsers = new ArrayList<>(); 
+		Set<User> theUsers = new HashSet<>(); 
 		theUsers.add(theInitializer);
 		theUsers.add(theParticipant);
 		theMeeting.setUsers(theUsers);
+		theMeeting.setStartTime(convertDate(thePartnerMeeting.getStartDate(), 
+				thePartnerMeeting.getStartTime()));
 		
 		meetingDao.save(theMeeting);
 	}
@@ -91,14 +110,23 @@ public class MeetingServiceImpl implements MeetingService {
 		theMeeting.setTitle(theTeamMeeting.getTitle());
 		theMeeting.setMeetingType(typeDao.findTypeByName("team"));
 		theMeeting.setInitializer(theInitializer);
-		Collection<User> theUsers = new ArrayList<>(); 
+		Set<User> theUsers = new HashSet<>(); 
 		theUsers.add(theInitializer);
 		for(String p: participants) {
 			theUsers.add(userDao.findByUserName(p));
 		}
 		theMeeting.setUsers(theUsers);
+		theMeeting.setStartTime(convertDate(theTeamMeeting.getStartDate(), 
+				theTeamMeeting.getStartTime()));
 		
 		meetingDao.save(theMeeting);
+	}
+
+	@Override
+	@Transactional
+	public List<Meeting> findMeetings(String when, User user) {
+		
+		return meetingDao.findMeetings(when, user);
 	}
 
 }

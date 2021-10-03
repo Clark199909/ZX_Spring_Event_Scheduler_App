@@ -1,15 +1,18 @@
 package app.service;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import app.entity.Meeting;
+import app.entity.User;
 import app.meeting.PartnerMeeting;
 import app.meeting.PersonalMeeting;
 import app.meeting.TeamMeeting;
 
 public interface MeetingService {
 	
-	Meeting findByMeetingTitle(String title);
+	public List<Meeting> findMeetings(String when, User user);
 	
 	void save(PersonalMeeting thePersonMeeting);
 	
@@ -18,4 +21,5 @@ public interface MeetingService {
 	void save(PartnerMeeting thePartnerMeeting);
 
 	void save(TeamMeeting theTeamMeeting);
+	
 }
