@@ -5,6 +5,8 @@ import javax.validation.constraints.Size;
 
 public class PersonalMeeting {
 	
+	private long id;
+	
 	@NotNull(message = "is required")
 	@Size(min = 1, message = "is required")
 	private String description;
@@ -23,12 +25,42 @@ public class PersonalMeeting {
 	@Size(min = 1, message = "is required")
 	private String startTime;
 	
-	public PersonalMeeting() {}
+	public PersonalMeeting() {
+		this.id = -1;
+	}
 
 	public PersonalMeeting(String description, String title, String initializerName) {
 		this.description = description;
 		this.title = title;
 		this.initializerName = initializerName;
+	}
+
+	public PersonalMeeting(String description, String title, String initializerName,
+						   String startDate, String startTime) {
+		this.description = description;
+		this.title = title;
+		this.initializerName = initializerName;
+		this.startDate = startDate;
+		this.startTime = startTime;
+	}
+	
+	public PersonalMeeting(long id, String description, String title,
+						   String initializerName, String startDate, 
+						   String startTime) {
+		this.id = id;
+		this.description = description;
+		this.title = title;
+		this.initializerName = initializerName;
+		this.startDate = startDate;
+		this.startTime = startTime;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getDescription() {

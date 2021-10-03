@@ -12,7 +12,7 @@ import app.meeting.TeamMeeting;
 
 public interface MeetingService {
 	
-	public List<Meeting> findMeetings(String when, User user);
+	List<Meeting> findMeetings(String when, User user);
 	
 	void save(PersonalMeeting thePersonMeeting);
 	
@@ -22,4 +22,5 @@ public interface MeetingService {
 
 	void save(TeamMeeting theTeamMeeting);
 	
+	Meeting getMeeting(long theId);
 }

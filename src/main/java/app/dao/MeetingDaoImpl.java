@@ -70,4 +70,11 @@ public class MeetingDaoImpl implements MeetingDao {
 		return meetings;
 	}
 
+	@Override
+	public Meeting getMeeting(long theId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Meeting theMeeting = currentSession.get(Meeting.class, theId);
+		return theMeeting;
+	}
+
 }

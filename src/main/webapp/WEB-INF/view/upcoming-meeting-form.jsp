@@ -40,19 +40,16 @@
 					<th>Description</th>
 					<th>Participants</th>
 					<th>Date and Time</th>
-					
-					
-					<%-- Only show "Action" column for managers or admin --%>
-					<security:authorize access="hasAnyRole('MANAGER', 'ADMIN')">
-					
-						<th>Action</th>
-					
-					</security:authorize>
+					<th>Action</th>
 					
 				</tr>
 				
 				<!-- loop over and print our customers -->
 				<c:forEach var="nextMeeting" items="${upcomingMeetings}">					
+					
+					<c:url var="updateLink" value="/manageMeeting/showUpdateForm">
+						<c:param name="meetingId" value="${nextMeeting.id}" />
+					</c:url>
 					
 					<tr>
 						<td> ${nextMeeting.title} </td>
@@ -66,7 +63,8 @@
 							</c:forEach>
 						</td>
 						<td> ${nextMeeting.startTime.toString()} </td>
-												
+						<td><a href="${updateLink}">Update</a></td>
+										
 					</tr>
 				
 				</c:forEach>

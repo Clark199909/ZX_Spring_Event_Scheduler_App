@@ -58,6 +58,7 @@ public class MeetingServiceImpl implements MeetingService {
 		Meeting theMeeting = new Meeting();
 		User theInitializer = userDao
 				.findByUserName(thePersonalMeeting.getInitializerName());
+		if(thePersonalMeeting.getId() != -1) theMeeting.setId(thePersonalMeeting.getId());
 		theMeeting.setDescription(thePersonalMeeting.getDescription());
 		theMeeting.setTitle(thePersonalMeeting.getTitle());
 		theMeeting.setMeetingType(typeDao.findTypeByName("personal"));
@@ -85,6 +86,7 @@ public class MeetingServiceImpl implements MeetingService {
 				.findByUserName(thePartnerMeeting.getInitializerName());
 		User theParticipant = userDao
 				.findByUserName(thePartnerMeeting.getParticipantName());
+		if(thePartnerMeeting.getId() != -1) theMeeting.setId(thePartnerMeeting.getId());
 		theMeeting.setDescription(thePartnerMeeting.getDescription());
 		theMeeting.setTitle(thePartnerMeeting.getTitle());
 		theMeeting.setMeetingType(typeDao.findTypeByName("partner"));
@@ -106,6 +108,7 @@ public class MeetingServiceImpl implements MeetingService {
 		User theInitializer = userDao
 				.findByUserName(theTeamMeeting.getInitializerName());
 		String[] participants = theTeamMeeting.getParticipants();
+		if(theTeamMeeting.getId() != -1) theMeeting.setId(theTeamMeeting.getId());
 		theMeeting.setDescription(theTeamMeeting.getDescription());
 		theMeeting.setTitle(theTeamMeeting.getTitle());
 		theMeeting.setMeetingType(typeDao.findTypeByName("team"));
@@ -127,6 +130,13 @@ public class MeetingServiceImpl implements MeetingService {
 	public List<Meeting> findMeetings(String when, User user) {
 		
 		return meetingDao.findMeetings(when, user);
+	}
+
+	@Override
+	@Transactional
+	public Meeting getMeeting(long theId) {
+		
+		return meetingDao.getMeeting(theId);
 	}
 
 }

@@ -71,6 +71,7 @@
 
 			<!-- need to associate this data with customer id -->
 			<form:hidden path="initializerName"/>
+			<form:hidden path="id"/>
 					
 			<table>
 				<tbody>

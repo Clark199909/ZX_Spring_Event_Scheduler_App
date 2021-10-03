@@ -3,6 +3,7 @@ package app.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -189,6 +190,50 @@ public class ManageMeetingController {
 		List<Meeting> theUpcomingMeetings = meetingService.findMeetings("future", myself);
 		theModel.addAttribute("upcomingMeetings", theUpcomingMeetings);
 		return "upcoming-meeting-form";
+	}
+	
+	@GetMapping("/showUpdateForm")
+	public String showUpdateForm(@RequestParam("meetingId") long theId,
+								Model theModel) {
+		Meeting theMeeting = meetingService.getMeeting(theId);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String title = theMeeting.getTitle();
+		String description = theMeeting.getDescription();
+		String initializerName = theMeeting.getInitializer().getUserName();
+		Date startDateTime = theMeeting.getStartTime();
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat timeFormat = new SimpleDateFormat("KK:mm a");
+		String startDate = dateFormat.format(startDateTime);
+		String startTime = timeFormat.format(startDateTime);
+		Collection<User> participants = theMeeting.getUsers();
+		StringBuilder sb = new StringBuilder();
+		for(User p:participants) {
+			if(p.getUserName().equals(authentication.getName())) continue;
+			sb.append(p.getUserName());
+			sb.append(',');
+		}
+		sb.deleteCharAt(sb.length()-1);
+		String participantNames = sb.toString();
+		
+		if(theMeeting.getMeetingType().getTypeName().equals("personal")) {
+			PersonalMeeting thePersonalMeeting = 
+					new PersonalMeeting(theId, description, title, 
+					initializerName, startDate, startTime);
+			theModel.addAttribute("personalMeeting", thePersonalMeeting);
+			return "personal-meeting-form";
+		}else if(theMeeting.getMeetingType().getTypeName().equals("partner")) {
+			PartnerMeeting thePartnerMeeting = 
+					new PartnerMeeting(theId, description, title, initializerName,
+						      participantNames, startDate, startTime);
+			theModel.addAttribute("partnerMeeting", thePartnerMeeting);
+			return "partner-meeting-form";
+		}else {
+			TeamMeeting theTeamMeeting = 
+					new TeamMeeting(theId, description, title, initializerName,
+						      participantNames, null, startDate, startTime);
+			theModel.addAttribute("teamMeeting", theTeamMeeting);
+			return "team-meeting-form";
+		}
 	}
 	
 }
