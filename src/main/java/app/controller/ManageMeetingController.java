@@ -189,6 +189,7 @@ public class ManageMeetingController {
 		User myself = userService.findByUserName(myName);
 		List<Meeting> theUpcomingMeetings = meetingService.findMeetings("future", myself);
 		theModel.addAttribute("upcomingMeetings", theUpcomingMeetings);
+		theModel.addAttribute("myName", myName);
 		return "upcoming-meeting-form";
 	}
 	

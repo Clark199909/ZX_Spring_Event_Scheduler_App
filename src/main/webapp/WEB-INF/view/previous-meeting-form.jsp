@@ -38,8 +38,8 @@
 					<th>Host</th>
 					<th>Type</th>
 					<th>Description</th>
-					<th>Date and Time</th>
 					<th>Participants</th>
+					<th>Date and Time</th>
 					
 					
 					<%-- Only show "Action" column for managers or admin --%>
@@ -55,16 +55,16 @@
 				<c:forEach var="nextMeeting" items="${upcomingMeetings}">					
 					
 					<tr>
-						<td> ${nextMeeting.title} </td>
-						<td> ${nextMeeting.initializer.userName} </td>
-						<td> ${nextMeeting.meetingType.typeName} </td>
-						<td> ${nextMeeting.description} </td>
-						<td> ${nextMeeting.startTime.toString()} </td>
+						<td> ${nextMeeting.getTitle()} </td>
+						<td> ${nextMeeting.getInitializer().getUserName()} </td>
+						<td> ${nextMeeting.getMeetingType().getTypeName()} </td>
+						<td> ${nextMeeting.getDescription()} </td>
 						<td> 
-							<c:forEach var="participant" items="${nextMeeting.users}">
-								<span>${participant.userName} </span>
+							<c:forEach var="participant" items="${nextMeeting.getUsers()}">
+								<span>${participant.userName}&ensp;</span>
 							</c:forEach>
 						</td>
+						<td> ${nextMeeting.getStartTime().toString()} </td>
 												
 					</tr>
 				

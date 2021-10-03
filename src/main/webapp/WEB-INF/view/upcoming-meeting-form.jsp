@@ -52,18 +52,22 @@
 					</c:url>
 					
 					<tr>
-						<td> ${nextMeeting.title} </td>
-						<td> ${nextMeeting.initializer.userName} </td>
-						<td> ${nextMeeting.meetingType.typeName} </td>
-						<td> ${nextMeeting.description} </td>
+						<td> ${nextMeeting.getTitle()} </td>
+						<td> ${nextMeeting.getInitializer().getUserName()} </td>
+						<td> ${nextMeeting.getMeetingType().getTypeName()} </td>
+						<td> ${nextMeeting.getDescription()} </td>
 						
 						<td> 
-							<c:forEach var="participant" items="${nextMeeting.users}">
+							<c:forEach var="participant" items="${nextMeeting.getUsers()}">
 								<span>${participant.userName}&ensp;</span>
 							</c:forEach>
 						</td>
-						<td> ${nextMeeting.startTime.toString()} </td>
-						<td><a href="${updateLink}">Update</a></td>
+						<td> ${nextMeeting.getStartTime().toString()} </td>
+						<td>
+							<c:if test="${nextMeeting.getInitializer().getUserName().equals(myName)}">
+								<a href="${updateLink}">Update</a>
+							</c:if>
+						</td>
 										
 					</tr>
 				

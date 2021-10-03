@@ -1,6 +1,7 @@
 package app.dao;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -53,12 +54,14 @@ public class MeetingDaoImpl implements MeetingDao {
 		
 		if(when.equals("previous")) {
 			theQuery = currentSession.createQuery(
-					"from Meeting where initializer =:myself and startTime < :curTime", Meeting.class);
+					"from Meeting where (initializer =:myself or :myself in elements(users)) "
+					+ "and startTime < :curTime", Meeting.class);
 			theQuery.setParameter("curTime", date);
 			theQuery.setParameter("myself", user);
 		}else {
 			theQuery = currentSession.createQuery(
-					"from Meeting where initializer =:myself and startTime >= :curTime", Meeting.class);
+					"from Meeting where (initializer =:myself or :myself in elements(users)) "
+					+ "and startTime >= :curTime", Meeting.class);
 			theQuery.setParameter("curTime", date);
 			theQuery.setParameter("myself", user);
 		}
