@@ -16,17 +16,6 @@ INSERT INTO `type` (type)
 VALUES 
 ('personal'),('partner'),('team');
 
-DROP TABLE IF EXISTS `status`;
-
-CREATE TABLE `status`(
-	`id` int(11) NOT NULL AUTO_INCREMENT,
-    `status` varchar(80) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
-
-INSERT INTO `status` (status)
-VALUES 
-('unconfirmed'),('upcoming'),('finished');
 
 DROP TABLE IF EXISTS `meeting`;
 
@@ -36,7 +25,7 @@ CREATE TABLE `meeting` (
   `type_id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `description` varchar(1000) NOT NULL,
-  `status_id` int(11) NOT NULL,
+  `date_and_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   
   KEY `FK_USER_idx` (`initializer`),
@@ -49,13 +38,8 @@ CREATE TABLE `meeting` (
   
   CONSTRAINT `FK_TYPE` 
   FOREIGN KEY (`type_id`) 
-  REFERENCES `type`(`id`),
+  REFERENCES `type`(`id`)
   
-  KEY `FK_STATUS_idx` (`status_id`),
-  
-  CONSTRAINT `FK_STATUS` 
-  FOREIGN KEY (`status_id`) 
-  REFERENCES `status`(`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 DROP TABLE IF EXISTS `users_meetings`;

@@ -88,6 +88,11 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public void save(User theUser) {
 		if(theUser.getPassword() != null) theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
+		if(theUser.getRoles() == null) {
+			Set<Role> role_set = new HashSet<>();
+			role_set.add(roleDao.findRoleByName("ROLE_EMPLOYEE"));
+			theUser.setRoles(role_set);
+		}
 		userDao.save(theUser);
 	}
 

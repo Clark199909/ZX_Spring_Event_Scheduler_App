@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
@@ -32,6 +33,23 @@
 		
 			<!-- need to associate this data with customer id -->
 			<form:hidden path="id" />
+			
+			<div class="form-group">
+				<div class="col-xs-15">
+					 <div>
+								
+						<!-- Check for registration error -->
+							<c:if test="${updateError != null}">
+								
+								<div class="alert alert-danger col-xs-offset-1 col-xs-10">
+									${updateError}
+								</div>
+		
+							</c:if>
+																			
+					 </div>
+				 </div>
+			</div>
 		
 			<table>
 				<tbody>

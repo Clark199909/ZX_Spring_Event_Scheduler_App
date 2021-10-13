@@ -1,4 +1,4 @@
-package com.luv2code.springsecurity.demo;
+package app.demo;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

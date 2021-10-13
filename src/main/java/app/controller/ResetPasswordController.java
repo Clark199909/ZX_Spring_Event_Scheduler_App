@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import app.confirmation.ConfirmationCode;
+import app.email.Email;
 import app.entity.User;
 import app.service.UserService;
 import app.user.CrmUser;
@@ -79,21 +81,46 @@ public class ResetPasswordController {
         }else if(emailExisting != null) {
         	myUser = emailExisting;
         }
-        PasswordUser passwordUser = new PasswordUser();
-        theModel.addAttribute("passwordUser", passwordUser);
+        ConfirmationCode theConfirmationCode = new ConfirmationCode();
+        String code = Email.generateCode();
+        theConfirmationCode.setCode(code);
+        Email.sendEmail(myUser.getEmail(), code, "Confirm Your Email");
+        theModel.addAttribute("confirmationCode", theConfirmationCode);
         
         return "reset-password-second-form";
 	}
 	
 	@PostMapping("/processResetPasswordSecondForm")
 	public String processResetPasswordSecondForm(
+			@Valid @ModelAttribute("confirmationCode") ConfirmationCode theConfirmationCode, 
+			BindingResult theBindingResult,
+			Model theModel) {
+		
+		if (theBindingResult.hasErrors()){
+			logger.info(String.valueOf(theBindingResult.getAllErrors()));
+			return "reset-password-second-form";
+		}
+		if(!theConfirmationCode.getCode().equals(theConfirmationCode.getInput())) {
+			theModel.addAttribute("confirmationCode", new ConfirmationCode());
+			theModel.addAttribute("registrationError", "Input confirmation code does not match.");
+        	return "reset-password-second-form";
+		}
+		
+		PasswordUser passwordUser = new PasswordUser();
+        theModel.addAttribute("passwordUser", passwordUser);
+        
+        return "reset-password-third-form";
+	}
+	
+	@PostMapping("/processResetPasswordThirdForm")
+	public String processResetPasswordThirdForm(
 			@Valid @ModelAttribute("passwordUser") PasswordUser thePasswordUser, 
 			BindingResult theBindingResult,
 			Model theModel) {
 		// form validation
 		if (theBindingResult.hasErrors()){
 			logger.info(String.valueOf(theBindingResult.getAllErrors()));
-			return "reset-password-second-form";
+			return "reset-password-third-form";
 		}
 		myUser.setPassword(thePasswordUser.getPassword());
 		userService.save(myUser);

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import app.email.Email;
 import app.entity.User;
 import app.service.UserService;
 import app.utils.CustomerSortUtils;
@@ -41,7 +41,7 @@ public class CustomerController {
 			theCustomers = userService.getUsers(theSortField);
 		}else {
 			// no sort field provided ... default to sorting by last name
-			theCustomers = userService.getUsers(CustomerSortUtils.LAST_NAME);
+			theCustomers = userService.getUsers(CustomerSortUtils.USER_NAME);
 		}
 				
 		// add the customers to the model
@@ -82,8 +82,11 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/saveCustomer")
-	public String saveCustomer(@ModelAttribute("customer") User theCustomer) {
+	public String saveCustomer(@ModelAttribute("customer") User theCustomer,
+							   Model theModel) {
 		
+		String updateCheckString = updateCheck(theCustomer, theModel, "customer-form");
+		if(!updateCheckString.equals("")) return updateCheckString;
 		// save the customer using our service
 		userService.updateInfo(theCustomer);
 		
@@ -91,12 +94,28 @@ public class CustomerController {
 	}
 	
 	@PostMapping("/saveProfile")
-	public String saveProfile(@ModelAttribute("customer") User theCustomer) {
-		
+	public String saveProfile(@ModelAttribute("customer") User theCustomer,
+							  Model theModel) {
+		String updateCheckString = updateCheck(theCustomer, theModel, "profile-form");
+		if(!updateCheckString.equals("")) return updateCheckString;
 		// save the customer using our service
 		userService.updateInfo(theCustomer);
 		
 		return "redirect:/";
+	}
+	
+	public String updateCheck(User theCustomer, Model theModel, String form) {
+		if(theCustomer.getEmail().equals("") || theCustomer.getFirstName().equals("") ||
+		   theCustomer.getLastName().equals("")) {
+			theModel.addAttribute("customer", theCustomer);
+			theModel.addAttribute("updateError", "All fields need to be filled!");
+			return form;
+		}else if(!Email.verifyEmailFormat(theCustomer.getEmail())){
+			theModel.addAttribute("customer", theCustomer);
+			theModel.addAttribute("updateError", "Email format is wrong!");
+			return form;
+		}
+		return "";
 	}
 	
 	@GetMapping("/search")
@@ -109,4 +128,46 @@ public class CustomerController {
 		theModel.addAttribute("customers", theCustomers);
 		return "list-customers";
 	}
+	
+	@GetMapping("/showFormForAdd")
+	public String showFormForAdd(Model theModel) {
+		
+		// create model attribute to bind form data
+		User theCustomer = new User();
+		
+		theModel.addAttribute("customer", theCustomer);
+		
+		return "new-customer-form";
+	}
+	
+	@PostMapping("/saveNewCustomer")
+	public String saveNewCustomer(@ModelAttribute("customer") User theCustomer,
+								  Model theModel) {
+		
+		// save the customer using our service
+		String code = Email.generateCode();
+		theCustomer.setPassword(code);
+		if(theCustomer.getEmail().equals("") || theCustomer.getFirstName().equals("") ||
+		   theCustomer.getLastName().equals("") || theCustomer.getUserName().equals("")) {
+			theModel.addAttribute("customer", theCustomer);
+			theModel.addAttribute("newAccountError", "All fields need to be filled!");
+			return "new-customer-form";
+		}else if(!Email.verifyEmailFormat(theCustomer.getEmail())){
+			theModel.addAttribute("customer", theCustomer);
+			theModel.addAttribute("newAccountError", "Email format is wrong!");
+			return "new-customer-form";
+		}
+		
+		String emailContent = "Dear " + theCustomer.getFirstName() + ",\n"
+				+ "Your account's default password is " + code +". You can change"
+						+ "it by clicking on \"forgot password?\" button in the "
+						+ "log in page.\n\nBest wishes,\n"
+						+ "ZX Scheduler Admin";
+		Email.sendEmail(theCustomer.getEmail(), emailContent, "New Account Password");
+		
+		userService.save(theCustomer);
+		
+		return "redirect:/customer/list";
+	}
+	
 }

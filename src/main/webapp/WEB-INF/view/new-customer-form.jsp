@@ -29,17 +29,17 @@
 	<div id="container">
 		<h3>Save Customer</h3>
 		
-		<form:form action="saveCustomer" modelAttribute="customer" method="POST">
+		<form:form action="saveNewCustomer" modelAttribute="customer" method="POST">
 		
 			<div class="form-group">
 				<div class="col-xs-15">
 					 <div>
 								
 						<!-- Check for registration error -->
-							<c:if test="${updateError != null}">
+							<c:if test="${newAccountError != null}">
 								
 								<div class="alert alert-danger col-xs-offset-1 col-xs-10">
-									${updateError}
+									${newAccountError}
 								</div>
 		
 							</c:if>
@@ -53,6 +53,11 @@
 		
 			<table>
 				<tbody>
+					<tr>
+						<td><label>User Name:</label></td>
+						<td><form:input path="userName"/></td>
+					</tr>
+				
 					<tr>
 						<td><label>First Name:</label></td>
 						<td><form:input path="firstName"/></td>

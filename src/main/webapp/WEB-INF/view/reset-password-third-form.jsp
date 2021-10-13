@@ -6,7 +6,7 @@
 
 <head>
 	
-	<title>Reset Password - Verify Confirmation</title>
+	<title>Register New User Form</title>
 	
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,17 +35,17 @@
 			<div class="panel panel-primary">
 
 				<div class="panel-heading">
-					<div class="panel-title">Email Verification</div>
+					<div class="panel-title">Reset Password</div>
 				</div>
 
 				<div style="padding-top: 30px" class="panel-body">
-					    
-					<!-- reset password first Form -->
-					<form:form action="${pageContext.request.contextPath}/resetPassword/processResetPasswordSecondForm" 
-						  	   modelAttribute="confirmationCode"
+
+					<!-- Registration Form -->
+					<form:form action="${pageContext.request.contextPath}/resetPassword/processResetPasswordThirdForm" 
+						  	   modelAttribute="passwordUser"
 						  	   class="form-horizontal">
-						  	   
-						<!-- Place for messages: error, alert etc ... -->
+
+					    <!-- Place for messages: error, alert etc ... -->
 					    <div class="form-group">
 					        <div class="col-xs-15">
 					            <div>
@@ -62,23 +62,25 @@
 					            </div>
 					        </div>
 					    </div>
-						
-						<form:hidden path="code"/>
-						
-						<!-- User name -->
+
+						<!-- New Password -->
 						<div style="margin-bottom: 25px" class="input-group">
-							
-							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span> 
-							
-							<form:input path="input" placeholder="Enter Confirmation Code (*)" class="form-control" />
-							<form:errors path="input" cssClass="error" />
-							
+							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+							<form:errors path="password" cssClass="error" />
+							<form:password path="password" placeholder="password (*)" class="form-control" />
 						</div>
 						
-						<!-- Register Button -->
+						<!-- Confirm Password -->
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span> 
+							<form:errors path="matchingPassword" cssClass="error" />
+							<form:password path="matchingPassword" placeholder="confirm password (*)" class="form-control" />
+						</div>
+
+						<!-- Reset Button -->
 						<div style="margin-top: 10px" class="form-group">						
 							<div class="col-sm-6 controls">
-								<button type="submit" class="btn btn-primary">Confirm</button>
+								<button type="submit" class="btn btn-primary">Reset Password</button>
 							</div>
 						</div>
 						

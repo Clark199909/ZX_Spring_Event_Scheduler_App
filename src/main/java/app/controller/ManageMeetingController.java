@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import app.email.Email;
 import app.entity.Meeting;
 import app.entity.User;
 import app.meeting.PartnerMeeting;
@@ -146,7 +148,7 @@ public class ManageMeetingController {
 	}
 	
 	@PostMapping("/processTeamMeetingForm")
-	public String processPartnerMeetingForm(
+	public String processTeamMeetingForm(
 			@Valid @ModelAttribute("teamMeeting") TeamMeeting theTeamMeeting,
 			BindingResult theBindingResult,
 			Model theModel) {
@@ -158,16 +160,27 @@ public class ManageMeetingController {
 		}
 		
 		String[] participants = participantNames.split(",");
+		Set<User> participantsSet = new HashSet<>();
 		for(String p:participants) {
-			if(userService.findByUserName(p) == null) {
-				theModel.addAttribute("partnerMeeting", new PartnerMeeting());
+			User pUser = userService.findByUserName(p);
+			if(pUser == null) {
+				theModel.addAttribute("teamMeeting", new TeamMeeting());
 				theModel.addAttribute("FindPeopleError", "No account with this name exists.");
 				return "team-meeting-form";
 			}
+			participantsSet.add(pUser);
 		}
 		theTeamMeeting.setParticipants(participants);
 		
 		meetingService.save(theTeamMeeting);
+		for(User pUser:participantsSet) {
+			String emailContent = "Dear " + pUser.getFirstName() + ",\nUser " 
+					+ theTeamMeeting.getInitializerName() + " has invited you "
+					+ "to a schduled meeting on " + theTeamMeeting.getStartDate().toString() 
+					+ ", starting at " + theTeamMeeting.getStartTime().toString()
+					+ ".\n\nBest Wishes,\nZX Scheduler Admin" ;
+			Email.sendEmail(pUser.getEmail(), emailContent, "Meeting Notification");
+		}
 		return "redirect:/";
 	}
 	

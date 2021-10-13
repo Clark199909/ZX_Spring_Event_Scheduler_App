@@ -44,6 +44,10 @@
 			
 			<!-- add out html table here -->
 			
+			<c:url var="sortLinkUserName" value="/customer/list">
+					<c:param name="sorting" value="<%= Integer.toString(CustomerSortUtils.USER_NAME) %>" />
+			</c:url>
+			
 			<c:url var="sortLinkFirstName" value="/customer/list">
 					<c:param name="sorting" value="<%= Integer.toString(CustomerSortUtils.FIRST_NAME) %>" />
 			</c:url>
@@ -59,6 +63,7 @@
 			<table>
 			
 				<tr>
+					<th><a href="${sortLinkUserName}">User Name</a></th>
 					<th><a href="${sortLinkFirstName}">First Name</a></th>
 					<th><a href="${sortLinkLastName}">Last Name</a></th>
 					<th><a href="${sortLinkEmail}">Email</a></th>
@@ -74,6 +79,7 @@
 					</c:url>
 					
 					<tr>
+						<td> ${tempCustomer.userName} </td>
 						<td> ${tempCustomer.firstName} </td>
 						<td> ${tempCustomer.lastName} </td>
 						<td> ${tempCustomer.email} </td>

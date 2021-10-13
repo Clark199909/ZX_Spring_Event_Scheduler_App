@@ -2,6 +2,8 @@ package app.email;
 
 import java.util.Properties;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.*;  
 import javax.mail.internet.*;  
@@ -29,12 +31,12 @@ public class Email {
             message.setText(emailContent);
             message.setSubject(emailTitle);
             //Need to make put the email address here
-            message.setFrom(new InternetAddress("xxxxxx@gmail.com"));
+            message.setFrom(new InternetAddress("xxxxx@gmail.com"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             message.saveChanges();
             Transport transport = session.getTransport("smtp");
             //Need to make put the email id and password here
-            transport.connect("smtp.gmail.com", "xxxxxx", "password");
+            transport.connect("smtp.gmail.com", "xxxxx", "password");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
             
@@ -52,4 +54,11 @@ public class Email {
 		}
 		return sb.toString();
 	}
+	
+	public static boolean verifyEmailFormat(String email){
+        String correctFormat = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+        Pattern emailPattern = Pattern.compile(correctFormat, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = emailPattern.matcher(email);
+        return matcher.find();
+    }
 }

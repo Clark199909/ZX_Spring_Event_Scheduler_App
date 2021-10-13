@@ -35,7 +35,7 @@
 			<div class="panel panel-primary">
 
 				<div class="panel-heading">
-					<div class="panel-title">Register New User</div>
+					<div class="panel-title">Search Email Or User Name</div>
 				</div>
 
 				<div style="padding-top: 30px" class="panel-body">

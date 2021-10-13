@@ -101,6 +101,9 @@ public class UserDaoImpl implements UserDao {
 		String theFieldName = null;
 				
 		switch(theSortField){
+			case CustomerSortUtils.USER_NAME:
+				theFieldName = "userName";
+				break;
 			case CustomerSortUtils.FIRST_NAME:
 				theFieldName = "firstName";
 				break;
@@ -111,7 +114,7 @@ public class UserDaoImpl implements UserDao {
 				theFieldName = "email";
 				break;
 			default:
-				theFieldName = "lastName";
+				theFieldName = "userName";
 		}
 				
 		// create a query
