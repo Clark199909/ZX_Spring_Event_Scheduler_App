@@ -139,4 +139,11 @@ public class MeetingServiceImpl implements MeetingService {
 		return meetingDao.getMeeting(theId);
 	}
 
+	@Override
+	@Transactional
+	public void deleteMeeting(long theId) {
+		
+		meetingDao.deleteMeeting(theId);
+	}
+
 }

@@ -23,4 +23,6 @@ public interface MeetingService {
 	void save(TeamMeeting theTeamMeeting);
 	
 	Meeting getMeeting(long theId);
+
+	void deleteMeeting(long theId);
 }

@@ -12,4 +12,6 @@ public interface MeetingDao {
 	void save(Meeting theMeeting);
 
 	Meeting getMeeting(long id);
+
+	void deleteMeeting(long theId);
 }

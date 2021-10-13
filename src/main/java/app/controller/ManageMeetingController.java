@@ -202,7 +202,7 @@ public class ManageMeetingController {
 		String description = theMeeting.getDescription();
 		String initializerName = theMeeting.getInitializer().getUserName();
 		Date startDateTime = theMeeting.getStartTime();
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		DateFormat timeFormat = new SimpleDateFormat("KK:mm a");
 		String startDate = dateFormat.format(startDateTime);
 		String startTime = timeFormat.format(startDateTime);
@@ -213,7 +213,7 @@ public class ManageMeetingController {
 			sb.append(p.getUserName());
 			sb.append(',');
 		}
-		sb.deleteCharAt(sb.length()-1);
+		if(!sb.isEmpty()) sb.deleteCharAt(sb.length()-1);
 		String participantNames = sb.toString();
 		
 		if(theMeeting.getMeetingType().getTypeName().equals("personal")) {
@@ -235,6 +235,14 @@ public class ManageMeetingController {
 			theModel.addAttribute("teamMeeting", theTeamMeeting);
 			return "team-meeting-form";
 		}
+	}
+	
+	@GetMapping("/delete")
+	public String deleteMeeting(@RequestParam("meetingId") long theId,
+								Model theModel) {
+		meetingService.deleteMeeting(theId);
+		
+		return "redirect:/manageMeeting/showFutureMeetings";
 	}
 	
 }

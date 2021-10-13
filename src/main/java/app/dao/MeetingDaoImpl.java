@@ -80,4 +80,15 @@ public class MeetingDaoImpl implements MeetingDao {
 		return theMeeting;
 	}
 
+	@Override
+	public void deleteMeeting(long theId) {
+		// get the current hibernate session
+		Session currentSession = sessionFactory.getCurrentSession();
+				
+		Query theQuery = currentSession.createQuery("delete from Meeting where id=:meetingId");
+		theQuery.setParameter("meetingId", theId);
+				
+		theQuery.executeUpdate();
+	}
+
 }

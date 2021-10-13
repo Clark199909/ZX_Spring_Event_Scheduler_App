@@ -51,6 +51,10 @@
 						<c:param name="meetingId" value="${nextMeeting.id}" />
 					</c:url>
 					
+					<c:url var="deleteLink" value="/manageMeeting/delete">
+						<c:param name="meetingId" value="${nextMeeting.id}" />
+					</c:url>
+					
 					<tr>
 						<td> ${nextMeeting.getTitle()} </td>
 						<td> ${nextMeeting.getInitializer().getUserName()} </td>
@@ -66,6 +70,11 @@
 						<td>
 							<c:if test="${nextMeeting.getInitializer().getUserName().equals(myName)}">
 								<a href="${updateLink}">Update</a>
+							</c:if>
+							
+							<c:if test="${nextMeeting.getInitializer().getUserName().equals(myName)}">
+								<a href="${deleteLink}"
+								   onclick="if(!(confirm('Are you sure you want to delete this customer?'))) return false">Delete</a>
 							</c:if>
 						</td>
 										

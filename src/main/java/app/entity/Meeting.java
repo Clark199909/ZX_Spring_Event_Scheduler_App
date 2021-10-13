@@ -28,11 +28,11 @@ public class Meeting {
 	@Column(name = "id")
 	private Long id;
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name="initializer")
 	private User initializer;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name="type_id")
 	private Type meetingType;
 	
@@ -46,7 +46,9 @@ public class Meeting {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date startTime;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, 
+			cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
+					CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinTable(name = "users_meetings", 
 	joinColumns = @JoinColumn(name = "meeting_id"), 
 	inverseJoinColumns = @JoinColumn(name = "user_id"))
