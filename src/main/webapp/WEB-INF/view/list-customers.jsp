@@ -80,7 +80,10 @@
 						
 						<td>
 							<!-- display the update link -->
-							<a href="${updateLink}">Update</a>
+							<c:if test="${!tempCustomer.isAdmin() || tempCustomer.getUserName().equals(myName)}">
+								<a href="${updateLink}">Update</a>
+							</c:if>
+							
 						</td>
 					</tr>
 				

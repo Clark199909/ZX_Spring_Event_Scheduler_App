@@ -22,6 +22,15 @@
 		Hello and Welcome <security:authentication property="principal.username" />!
 	</p>
 	
+	
+	<input type="button" value="Update Profile" 
+		onclick="window.location.href='customer/homeShowFormForUpdate'; return false;"
+		class="add-button"
+	/>
+	
+	
+	<hr>
+	
 	<input type="button" value="Add personal meeting" 
 			onclick="window.location.href='manageMeeting/showPersonalMeetingForm'; return false;"
 			class="add-button"

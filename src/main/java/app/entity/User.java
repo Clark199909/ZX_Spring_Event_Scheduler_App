@@ -112,6 +112,13 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+	
+	public boolean isAdmin() {
+		for(Role role:roles) {
+			if(role.getName().equals("ROLE_ADMIN")) return true;
+		}
+		return false;
+	}
 
 	@Override
 	public String toString() {
