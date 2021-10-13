@@ -18,4 +18,12 @@ public interface UserService extends UserDetailsService {
     void save(User theUser);
     
     List<User> searchUsers(String theSearchName);
+
+	List<User> getUsers(int theSortField);
+
+	User getUser(long theId);
+
+	void deleteUser(int theId);
+
+	void updateInfo(User theCustomer);
 }

@@ -13,5 +13,13 @@ public interface UserDao {
 	User findByUserEmail(String userEmail);
 	
 	List<User> searchUsers(String theSearchName);
+
+	List<User> getCustomers(int theSortField);
+
+	User getUser(long theId);
+
+	void deleteUser(int theId);
+
+	void updateInfo(User theCustomer);
     
 }

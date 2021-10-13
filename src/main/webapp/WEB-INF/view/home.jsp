@@ -53,6 +53,15 @@
 	
 	<hr>
 	
+	<security:authorize access="hasRole('ADMIN')">
+		<input type="button" value="Manage User Accounts" 
+				onclick="window.location.href='customer/list'; return false;"
+				class="add-button"
+		/>
+	</security:authorize>
+	
+	<hr>
+	
 	
 	<!-- Add a logout button -->
 	<form:form action="${pageContext.request.contextPath}/logout" 

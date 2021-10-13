@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public void save(User theUser) {
-		theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
+		if(theUser.getPassword() != null) theUser.setPassword(passwordEncoder.encode(theUser.getPassword()));
 		userDao.save(theUser);
 	}
 
@@ -96,5 +96,30 @@ public class UserServiceImpl implements UserService {
 	public List<User> searchUsers(String theSearchName) {
 		
 		return userDao.searchUsers(theSearchName);
+	}
+
+	@Override
+	@Transactional
+	public List<User> getUsers(int theSortField) {
+		
+		return userDao.getCustomers(theSortField);
+	}
+
+	@Override
+	@Transactional
+	public User getUser(long theId) {
+		return userDao.getUser(theId);
+	}
+
+	@Override
+	@Transactional
+	public void deleteUser(int theId) {
+		userDao.deleteUser(theId);
+	}
+
+	@Override
+	@Transactional
+	public void updateInfo(User theCustomer) {
+		userDao.updateInfo(theCustomer);
 	}
 }
