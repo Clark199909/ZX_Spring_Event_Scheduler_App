@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import app.email.Email;
 import app.entity.User;
 import app.service.UserService;
 import app.user.CrmUser;
@@ -68,11 +69,32 @@ public class RegistrationController {
 			logger.warning("User name already exists.");
         	return "registration-form";
         }
-     // create user account        						
-        userService.save(theCrmUser);
         
-        logger.info("Successfully created user: " + userName);
+        String code = Email.generateCode();
+        Email.sendEmail(theCrmUser.getEmail(), code, "Email Confirmation"); 
+        theCrmUser.setCode(code);
+        theModel.addAttribute("crmUser", theCrmUser);
         
-        return "registration-confirmation";		
+        return "reg-confirm";
 	}
+	
+	@PostMapping("/confirmEmail")
+	public String confirmEmail(@ModelAttribute("crmUser") CrmUser theCrmUser,
+							   Model theModel) {
+		
+		if(theCrmUser.getCodeInput() == null) {
+			theModel.addAttribute("crmUser", theCrmUser);
+			theModel.addAttribute("registrationError", "Code Input needed.");
+			return "reg-confirm";
+		}else if(!theCrmUser.getCodeInput().equals(theCrmUser.getCode())) {
+			theModel.addAttribute("crmUser", theCrmUser);
+			theModel.addAttribute("registrationError", "Wrong Code Input.");
+			return "reg-confirm";
+		}
+			
+		userService.save(theCrmUser);
+		logger.info("Successfully created user: ");
+		return "registration-confirmation";	
+	}
+	
 }

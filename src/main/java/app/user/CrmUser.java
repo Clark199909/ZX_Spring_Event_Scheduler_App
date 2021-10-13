@@ -36,6 +36,10 @@ public class CrmUser {
 	@NotNull(message = "is required")
 	@Size(min = 1, message = "is required")
 	private String email;
+	
+	private String code;
+	
+	private String codeInput;
 
 	public CrmUser() {
 
@@ -97,5 +101,23 @@ public class CrmUser {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getCodeInput() {
+		return codeInput;
+	}
+
+	public void setCodeInput(String codeInput) {
+		this.codeInput = codeInput;
+	}
+	
+	
 
 }
