@@ -146,4 +146,14 @@ public class MeetingServiceImpl implements MeetingService {
 		meetingDao.deleteMeeting(theId);
 	}
 
+	@Override
+	@Transactional
+	public boolean findMeetingByDateTime(String startDate, String startTime, 
+			String initializerName) {
+		
+		Date startDateTime = convertDate(startDate, startTime);
+		User initializer = userDao.findByUserName(initializerName);
+		return meetingDao.findMeetingByDateTime(startDateTime, initializer);
+	}
+
 }

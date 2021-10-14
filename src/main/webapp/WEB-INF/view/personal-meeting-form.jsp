@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
 
 <!doctype html>
 <html lang="en">
@@ -53,6 +54,23 @@
 		<form:form action="processPersonalMeetingForm" 
 				   modelAttribute="personalMeeting" 
 				   method="POST">
+				   
+			<div class="form-group">
+				<div class="col-xs-15">
+					 <div>
+								
+							<!-- Check for registration error -->
+							<c:if test="${participantError != null}">
+								
+								<div class="alert alert-danger col-xs-offset-1 col-xs-10">
+									${participantError}
+								</div>
+		
+							</c:if>
+																			
+					 </div>
+				</div>
+			</div>
 
 			<!-- need to associate this data with customer id -->
 			<form:hidden path="initializerName"/>

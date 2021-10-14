@@ -25,4 +25,6 @@ public interface MeetingService {
 	Meeting getMeeting(long theId);
 
 	void deleteMeeting(long theId);
+
+	boolean findMeetingByDateTime(String startDate, String startTime, String initializerName);
 }

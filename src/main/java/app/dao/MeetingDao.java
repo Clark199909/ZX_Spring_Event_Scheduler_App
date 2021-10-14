@@ -1,5 +1,6 @@
 package app.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import app.entity.Meeting;
@@ -14,4 +15,6 @@ public interface MeetingDao {
 	Meeting getMeeting(long id);
 
 	void deleteMeeting(long theId);
+
+	boolean findMeetingByDateTime(Date startDateTime, User initializer);
 }

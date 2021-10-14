@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import app.entity.Meeting;
 import app.entity.User;
+import app.utils.CustomerSortUtils;
+import app.utils.MeetingSortUtils;
 
 @Repository
 public class MeetingDaoImpl implements MeetingDao {
@@ -55,16 +57,17 @@ public class MeetingDaoImpl implements MeetingDao {
 		if(when.equals("previous")) {
 			theQuery = currentSession.createQuery(
 					"from Meeting where (initializer =:myself or :myself in elements(users)) "
-					+ "and startTime < :curTime", Meeting.class);
+					+ "and startTime < :curTime order by startTime", Meeting.class);
 			theQuery.setParameter("curTime", date);
 			theQuery.setParameter("myself", user);
 		}else {
 			theQuery = currentSession.createQuery(
 					"from Meeting where (initializer =:myself or :myself in elements(users)) "
-					+ "and startTime >= :curTime", Meeting.class);
+					+ "and startTime >= :curTime order by startTime", Meeting.class);
 			theQuery.setParameter("curTime", date);
 			theQuery.setParameter("myself", user);
 		}
+		
 				
 		// execute query and get result list
 		List<Meeting> meetings = theQuery.getResultList();
@@ -89,6 +92,26 @@ public class MeetingDaoImpl implements MeetingDao {
 		theQuery.setParameter("meetingId", theId);
 				
 		theQuery.executeUpdate();
+	}
+
+	@Override
+	public boolean findMeetingByDateTime(Date startDateTime, User initializer) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query<Meeting> theQuery = currentSession.createQuery("from Meeting where "
+				+ "initializer =:theUser and startTime =:theStartDateTime", Meeting.class);
+		theQuery.setParameter("theUser", initializer);
+		theQuery.setParameter("theStartDateTime", startDateTime);
+		
+		Meeting theMeeting = null;
+		try {
+			theMeeting = theQuery.getSingleResult();
+		}catch(Exception e) {
+			return false;
+		}
+		
+		
+		return true;
 	}
 
 }

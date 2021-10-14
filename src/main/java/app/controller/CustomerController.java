@@ -25,6 +25,10 @@ public class CustomerController {
 	@Autowired
 	private UserService userService;
 	
+	private String originalEmail;
+	
+	private User customer;
+	
 	@GetMapping("/list")
 	public String listCustomers(Model theModel, 
 			@RequestParam(required=false) String sorting) {
@@ -61,6 +65,8 @@ public class CustomerController {
 		// set customer as a model attribute to pre-populate the form
 		theModel.addAttribute("customer", theCustomer);
 		
+		originalEmail = theCustomer.getEmail();
+		
 		// send over to our form
 		return "customer-form";
 	}
@@ -76,6 +82,8 @@ public class CustomerController {
 
 		// set customer as a model attribute to pre-populate the form
 		theModel.addAttribute("customer", theCustomer);
+		
+		originalEmail = theCustomer.getEmail();
 
 		// send over to our form
 		return "profile-form";
@@ -88,9 +96,20 @@ public class CustomerController {
 		String updateCheckString = updateCheck(theCustomer, theModel, "customer-form");
 		if(!updateCheckString.equals("")) return updateCheckString;
 		// save the customer using our service
-		userService.updateInfo(theCustomer);
+		if(!originalEmail.equals(theCustomer.getEmail())) {
+			String code = Email.generateCode();
+			String emailContent = "Dear " + theCustomer.getFirstName() + ",\n"
+					+ "The comfirmation code for your new email is " + code + "."
+					+ "\n\nBest wishes,\nZX Scheduler Admin";
+			Email.sendEmail(theCustomer.getEmail(), emailContent, "Email Verification");
+			
+			//TODO
+			return "redirect:/customer/list";
+		}else {
+			userService.updateInfo(theCustomer);
+			return "redirect:/customer/list";
+		}
 		
-		return "redirect:/customer/list";
 	}
 	
 	@PostMapping("/saveProfile")

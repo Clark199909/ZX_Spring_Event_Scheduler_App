@@ -83,6 +83,12 @@ public class ManageMeetingController {
 		if (theBindingResult.hasErrors()){
 			 return "personal-meeting-form";
 		}
+		if(meetingService.findMeetingByDateTime(thePersonalMeeting.getStartDate(), 
+				thePersonalMeeting.getStartTime(), thePersonalMeeting.getInitializerName())) {
+			theModel.addAttribute("personalMeeting", thePersonalMeeting);
+			theModel.addAttribute("participantError", "You already have a scheduled event at the same time!");
+			return "personal-meeting-form";
+		}
 		meetingService.save(thePersonalMeeting);
 		
 		return "redirect:/";
@@ -108,6 +114,9 @@ public class ManageMeetingController {
 			Model theModel) {
 		
 		String participantName = thePartnerMeeting.getParticipantName();
+		String startDate = thePartnerMeeting.getStartDate();
+		String startTime = thePartnerMeeting.getStartTime();
+		String initializerName = thePartnerMeeting.getInitializerName();
 		
 		if (theBindingResult.hasErrors()){
 			return "partner-meeting-form";
@@ -118,8 +127,20 @@ public class ManageMeetingController {
 			theModel.addAttribute("partnerMeeting", new PartnerMeeting());
 			theModel.addAttribute("FindPartnerError", "No account with this name exists.");
 			return "partner-meeting-form";
+		}else if(meetingService.findMeetingByDateTime(startDate, startTime, initializerName) ||
+				meetingService.findMeetingByDateTime(startDate, startTime, participantName)) {
+			theModel.addAttribute("partnerMeeting", thePartnerMeeting);
+			theModel.addAttribute("FindPartnerError", "Either you or your partner already have "
+					+ "a scheduled meeting at the same time!");
+			return "partner-meeting-form";
 		}
 		meetingService.save(thePartnerMeeting);
+		String emailContent = "Dear " + nameExisting.getFirstName() + ",\nUser " 
+				+ thePartnerMeeting.getInitializerName() + " has invited you "
+				+ "to a schduled meeting on " + thePartnerMeeting.getStartDate().toString() 
+				+ ", starting at " + thePartnerMeeting.getStartTime().toString()
+				+ ".\n\nBest Wishes,\nZX Scheduler Admin" ;
+		Email.sendEmail(nameExisting.getEmail(), emailContent, "Meeting Notification");
 		return "redirect:/";
 	}
 	
@@ -154,6 +175,9 @@ public class ManageMeetingController {
 			Model theModel) {
 		
 		String participantNames = theTeamMeeting.getParticipantNames();
+		String startDate = theTeamMeeting.getStartDate();
+		String startTime = theTeamMeeting.getStartTime();
+		String initializerName = theTeamMeeting.getInitializerName();
 		
 		if (theBindingResult.hasErrors()){
 			return "team-meeting-form";
@@ -161,11 +185,20 @@ public class ManageMeetingController {
 		
 		String[] participants = participantNames.split(",");
 		Set<User> participantsSet = new HashSet<>();
+		if(meetingService.findMeetingByDateTime(startDate, startTime, initializerName)) {
+			theModel.addAttribute("teamMeeting", theTeamMeeting);
+			theModel.addAttribute("FindPeopleError", "You already has a schduled meeting starting at the same time!");
+			return "team-meeting-form";
+		}
 		for(String p:participants) {
 			User pUser = userService.findByUserName(p);
 			if(pUser == null) {
 				theModel.addAttribute("teamMeeting", new TeamMeeting());
 				theModel.addAttribute("FindPeopleError", "No account with this name exists.");
+				return "team-meeting-form";
+			}else if(meetingService.findMeetingByDateTime(startDate, startTime, p)) {
+				theModel.addAttribute("teamMeeting", theTeamMeeting);
+				theModel.addAttribute("FindPeopleError", p+" already has a schduled meeting starting at the same time!");
 				return "team-meeting-form";
 			}
 			participantsSet.add(pUser);
